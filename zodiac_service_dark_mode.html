@@ -1,1 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZODIAC SERVICE - Swiggy & Zomato Onboarding | 5-Star Rating Boost</title>
+    <meta name="description" content="We help businesses onboard onto e-commerce platforms, boost sales & orders, and achieve 5-star ratings. Call 89296 82938 for free consultation.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
 
+        body {
+            background: #050505;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+
+        /* ===== 4D SLIDER SYSTEM ===== */
+        .slider-4d-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 700px;
+            overflow: hidden;
+            perspective: 2000px;
+        }
+
+        .slide-4d {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .slide-4d.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-4d.entering {
+            animation: slide4DEnter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .slide-4d.exiting {
+            animation: slide4DExit 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes slide4DEnter {
+            0% {
+                opacity: 0;
+                transform: translateZ(-800px) translateX(100%) rotateY(-45deg) scale(0.6);
+                filter: blur(20px) brightness(0.3);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateZ(-200px) translateX(20%) rotateY(-15deg) scale(0.85);
+                filter: blur(5px) brightness(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateZ(0) translateX(0) rotateY(0deg) scale(1);
+                filter: blur(0) brightness(1);
+            }
+        }
+
+        @keyframes slide4DExit {
+            0% {
+                opacity: 1;
+                transform: translateZ(0) translateX(0) rotateY(0deg) scale(1);
+                filter: blur(0) brightness(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateZ(-300px) translateX(-40%) rotateY(25deg) scale(0.8);
+                filter: blur(10px) brightness(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translateZ(-800px) translateX(-100%) rotateY(60deg) scale(0.5);
+                filter: blur(30px) brightness(0.2);
+            }
+        }
+
+        .slide-bg-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .slide-content-layer {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .slide-text-side { transform-style: preserve-3d; }
+        .slide-visual-side {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* 4D Card in slide */
+        .slide-card-4d {
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            transform: rotateY(-8deg) rotateX(3deg);
+            box-shadow: 
+                30px 30px 80px rgba(0,0,0,0.8),
+                -5px -5px 30px rgba(255,255,255,0.01),
+                inset 0 1px 0 rgba(255,255,255,0.03);
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .slide-4d.active .slide-card-4d {
+            animation: cardFloat4D 6s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat4D {
+            0%, 100% { transform: rotateY(-8deg) rotateX(3deg) translateY(0); }
+            25% { transform: rotateY(-6deg) rotateX(5deg) translateY(-15px); }
+            50% { transform: rotateY(-10deg) rotateX(2deg) translateY(-8px); }
+            75% { transform: rotateY(-5deg) rotateX(4deg) translateY(-20px); }
+        }
+
+        /* Slide backgrounds - DARK MODE */
+        .bg-slide-1 {
+            background: radial-gradient(ellipse at 20% 50%, rgba(236,72,153,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.05) 0%, transparent 40%),
+                        #050505;
+        }
+        .bg-slide-2 {
+            background: radial-gradient(ellipse at 70% 50%, rgba(249,115,22,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 80%, rgba(251,191,36,0.05) 0%, transparent 40%),
+                        #050505;
+        }
+        .bg-slide-3 {
+            background: radial-gradient(ellipse at 50% 30%, rgba(225,29,72,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 10% 70%, rgba(236,72,153,0.05) 0%, transparent 40%),
+                        #050505;
+        }
+        .bg-slide-4 {
+            background: radial-gradient(ellipse at 30% 60%, rgba(16,185,129,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.05) 0%, transparent 40%),
+                        #050505;
+        }
+        .bg-slide-5 {
+            background: radial-gradient(ellipse at 50% 50%, rgba(236,72,153,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.05) 0%, transparent 40%),
+                        #050505;
+        }
+
+        /* Navigation dots */
+        .slider-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 50px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-dot::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ec4899, #8b5cf6);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-dot.active::after {
+            width: 100%;
+            animation: dotProgress 5s linear forwards;
+        }
+
+        @keyframes dotProgress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .nav-dot:hover {
+            background: rgba(255,255,255,0.15);
+            transform: scaleY(1.5);
+        }
+
+        /* Arrow nav */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 24px;
+            color: #a3a3a3;
+            transition: all 0.3s ease;
+        }
+
+        .slider-arrow:hover {
+            background: rgba(236,72,153,0.15);
+            border-color: rgba(236,72,153,0.3);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-arrow.prev { left: 30px; }
+        .slider-arrow.next { right: 30px; }
+
+        /* Slide counter */
+        .slide-counter {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.15);
+            z-index: 100;
+            letter-spacing: 2px;
+        }
+        .slide-counter span { color: #ec4899; font-size: 24px; }
+
+        /* Text animations */
+        .slide-4d.active .slide-title {
+            animation: textReveal 1s 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+        .slide-4d.active .slide-desc {
+            animation: textReveal 1s 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+        .slide-4d.active .slide-btns {
+            animation: textReveal 1s 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+        .slide-4d.active .slide-badge {
+            animation: textReveal 1s 0.1s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+
+        @keyframes textReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) translateZ(-100px);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 3D Button */
+        .btn-3d {
+            display: inline-block;
+            transform-style: preserve-3d;
+            box-shadow: 0 6px 0 #be185d, 0 12px 30px rgba(236,72,153,0.3);
+            transition: all 0.15s ease;
+        }
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #be185d, 0 18px 40px rgba(236,72,153,0.4);
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #be185d, 0 6px 15px rgba(236,72,153,0.2);
+        }
+
+        .btn-3d-green {
+            box-shadow: 0 6px 0 #047857, 0 12px 30px rgba(16,185,129,0.3);
+        }
+        .btn-3d-green:hover {
+            box-shadow: 0 9px 0 #047857, 0 18px 40px rgba(16,185,129,0.4);
+        }
+        .btn-3d-green:active {
+            box-shadow: 0 3px 0 #047857, 0 6px 15px rgba(16,185,129,0.2);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            animation: whatsappBounce 2s ease-in-out infinite;
+        }
+        @keyframes whatsappBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .whatsapp-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #25d366, #128c7e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 0 #0d7a6e, 0 20px 40px rgba(37,211,102,0.3);
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 12px 0 #0d7a6e, 0 25px 50px rgba(37,211,102,0.4);
+        }
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #141414;
+            color: #e5e5e5;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .whatsapp-float:hover .whatsapp-tooltip { opacity: 1; right: 90px; }
+
+        /* Stats 3D */
+        .stat-3d {
+            background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(8,8,8,0.98));
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        /* Platform logos 3D */
+        .logo-3d {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+        }
+        .logo-3d:hover {
+            transform: translateY(-15px) rotateX(15deg) scale(1.2);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .slide-content-layer { grid-template-columns: 1fr; gap: 2rem; }
+            .slide-card-4d { transform: rotateY(0) rotateX(0); padding: 1.5rem; }
+            .slider-arrow { display: none; }
+            .slide-title { font-size: 2.5rem !important; }
+            .slider-4d-container { min-height: 900px; }
+        }
+
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 4D SLIDER ===== -->
+    <div class="slider-4d-container" id="heroSlider">
+        <div class="slide-counter"><span id="currentSlide">01</span> / 05</div>
+
+        <!-- Slide 1: Hero -->
+        <div class="slide-4d active bg-slide-1" data-index="0">
+            <div class="slide-bg-layer">
+                <div class="particle w-96 h-96 bg-pink-500 top-10 left-10" style="animation: floatParticle 20s infinite;"></div>
+                <div class="particle w-64 h-64 bg-violet-500 bottom-20 right-20" style="animation: floatParticle 25s infinite -5s;"></div>
+            </div>
+            <div class="slide-content-layer">
+                <div class="slide-text-side">
+                    <div class="slide-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/8 border border-amber-500/20 text-amber-400 text-xs font-bold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        Trusted by 500+ Sellers
+                    </div>
+                    <h1 class="slide-title text-5xl md:text-7xl font-black leading-tight mb-6">
+                        <span class="gradient-text">5-Star</span><br/>
+                        <span class="text-white">Onboarding</span><br/>
+                        <span class="gradient-text">That Sells</span>
+                    </h1>
+                    <p class="slide-desc text-lg text-neutral-500 mb-8 leading-relaxed max-w-lg">
+                        We help restaurants launch on <strong class="text-orange-400">Swiggy</strong> & <strong class="text-rose-500">Zomato</strong>, skyrocket sales, and earn glowing 5-star reviews.
+                    </p>
+                    <div class="slide-btns flex flex-wrap gap-4">
+                        <a href="tel:8929682938" class="btn-3d bg-gradient-to-r from-pink-500 to-violet-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            📞 89296 82938
+                        </a>
+                        <a href="https://wa.me/918929682938" target="_blank" class="btn-3d btn-3d-green bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            💬 WhatsApp
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-visual-side">
+                    <div class="slide-card-4d">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-pink-500 flex items-center justify-center text-2xl">⭐</div>
+                            <div>
+                                <div class="font-bold text-white text-lg">Rating Boosted</div>
+                                <div class="text-xs text-neutral-600">Client: SpiceKitchen</div>
+                            </div>
+                            <div class="ml-auto text-3xl font-black text-amber-400">3.8 → 4.9★</div>
+                        </div>
+                        <div class="space-y-3 mb-6">
+                            <div class="h-3 bg-neutral-900 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-amber-400 via-pink-500 to-violet-500 w-[95%] rounded-full"></div>
+                            </div>
+                            <div class="flex justify-between text-sm text-neutral-600 font-medium">
+                                <span>Orders: +420%</span>
+                                <span>Revenue: +350%</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="stat-3d rounded-xl p-3 text-center">
+                                <div class="text-2xl font-black text-pink-400">500+</div>
+                                <div class="text-[10px] text-neutral-600 font-semibold uppercase">Clients</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-3 text-center">
+                                <div class="text-2xl font-black text-violet-400">4.9★</div>
+                                <div class="text-[10px] text-neutral-600 font-semibold uppercase">Rating</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-3 text-center">
+                                <div class="text-2xl font-black text-amber-400">98%</div>
+                                <div class="text-[10px] text-neutral-600 font-semibold uppercase">Success</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Swiggy -->
+        <div class="slide-4d bg-slide-2" data-index="1">
+            <div class="slide-content-layer">
+                <div class="slide-text-side">
+                    <div class="slide-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/8 border border-orange-500/20 text-orange-400 text-xs font-bold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                        Swiggy Experts
+                    </div>
+                    <h1 class="slide-title text-5xl md:text-7xl font-black leading-tight mb-6">
+                        <span class="text-orange-400">Swiggy</span><br/>
+                        <span class="text-white">Domination</span><br/>
+                        <span class="gradient-text">Starts Here</span>
+                    </h1>
+                    <p class="slide-desc text-lg text-neutral-500 mb-8 leading-relaxed max-w-lg">
+                        Complete Swiggy restaurant onboarding, menu optimization, photo shoots, and sales boost strategies that deliver real results.
+                    </p>
+                    <div class="slide-btns flex flex-wrap gap-4">
+                        <a href="tel:8929682938" class="btn-3d bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            🚀 Start Swiggy
+                        </a>
+                        <a href="https://wa.me/918929682938" target="_blank" class="btn-3d btn-3d-green bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            💬 Chat Now
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-visual-side flex justify-center">
+                    <div class="slide-card-4d text-center max-w-sm">
+                        <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/c7d5001034568bafd6a86a9d45d638e4c4bd27df.png" alt="Swiggy" class="logo-3d w-40 h-40 mx-auto mb-6 object-contain rounded-2xl"/>
+                        <h3 class="text-3xl font-black text-orange-400 mb-2">Swiggy</h3>
+                        <p class="text-neutral-600 text-sm mb-6">India's #1 Food Delivery Platform</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="stat-3d rounded-xl p-3">
+                                <div class="text-xl font-black text-orange-400">+380%</div>
+                                <div class="text-[10px] text-neutral-600">Order Growth</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-3">
+                                <div class="text-xl font-black text-amber-400">4.8★</div>
+                                <div class="text-[10px] text-neutral-600">Avg Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Zomato -->
+        <div class="slide-4d bg-slide-3" data-index="2">
+            <div class="slide-content-layer">
+                <div class="slide-text-side">
+                    <div class="slide-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/8 border border-rose-500/20 text-rose-400 text-xs font-bold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span>
+                        Zomato Pros
+                    </div>
+                    <h1 class="slide-title text-5xl md:text-7xl font-black leading-tight mb-6">
+                        <span class="text-rose-500">Zomato</span><br/>
+                        <span class="text-white">Excellence</span><br/>
+                        <span class="gradient-text">Delivered</span>
+                    </h1>
+                    <p class="slide-desc text-lg text-neutral-500 mb-8 leading-relaxed max-w-lg">
+                        Expert Zomato listing creation, food photography, review management, and reputation strategies for consistent 5-star ratings.
+                    </p>
+                    <div class="slide-btns flex flex-wrap gap-4">
+                        <a href="tel:8929682938" class="btn-3d bg-gradient-to-r from-rose-500 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            🍽️ Start Zomato
+                        </a>
+                        <a href="https://wa.me/918929682938" target="_blank" class="btn-3d btn-3d-green bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            💬 Chat Now
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-visual-side flex justify-center">
+                    <div class="slide-card-4d text-center max-w-sm">
+                        <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/6fc877f9365e0263b7bf4334c27c7a08d11e94c8.png" alt="Zomato" class="logo-3d w-40 h-40 mx-auto mb-6 object-contain rounded-2xl"/>
+                        <h3 class="text-3xl font-black text-rose-500 mb-2">Zomato</h3>
+                        <p class="text-neutral-600 text-sm mb-6">India's Largest Food Network</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="stat-3d rounded-xl p-3">
+                                <div class="text-xl font-black text-rose-400">+420%</div>
+                                <div class="text-[10px] text-neutral-600">Order Growth</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-3">
+                                <div class="text-xl font-black text-pink-400">4.9★</div>
+                                <div class="text-[10px] text-neutral-600">Avg Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Services -->
+        <div class="slide-4d bg-slide-4" data-index="3">
+            <div class="slide-content-layer">
+                <div class="slide-text-side">
+                    <div class="slide-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/8 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Full Service
+                    </div>
+                    <h1 class="slide-title text-5xl md:text-7xl font-black leading-tight mb-6">
+                        <span class="gradient-text">Everything</span><br/>
+                        <span class="text-white">You Need</span><br/>
+                        <span class="text-emerald-400">To Win</span>
+                    </h1>
+                    <p class="slide-desc text-lg text-neutral-500 mb-8 leading-relaxed max-w-lg">
+                        From onboarding to 5-star ratings — we handle catalog creation, menu design, photo shoots, ads, reviews, and ongoing support.
+                    </p>
+                    <div class="slide-btns flex flex-wrap gap-4">
+                        <a href="tel:8929682938" class="btn-3d bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            🎯 Get Started
+                        </a>
+                        <a href="https://wa.me/918929682938" target="_blank" class="btn-3d btn-3d-green bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-2xl font-bold text-lg">
+                            💬 Free Quote
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-visual-side">
+                    <div class="slide-card-4d">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-pink-500/30 transition">
+                                <div class="text-2xl mb-1">🚀</div>
+                                <div class="text-sm font-bold text-white">Onboarding</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-amber-500/30 transition">
+                                <div class="text-2xl mb-1">📈</div>
+                                <div class="text-sm font-bold text-white">Sales Boost</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-violet-500/30 transition">
+                                <div class="text-2xl mb-1">⭐</div>
+                                <div class="text-sm font-bold text-white">5-Star Ratings</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-cyan-500/30 transition">
+                                <div class="text-2xl mb-1">🎨</div>
+                                <div class="text-sm font-bold text-white">Branding</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-emerald-500/30 transition">
+                                <div class="text-2xl mb-1">📞</div>
+                                <div class="text-sm font-bold text-white">24/7 Support</div>
+                            </div>
+                            <div class="stat-3d rounded-xl p-4 text-center hover:border-rose-500/30 transition">
+                                <div class="text-2xl mb-1">📊</div>
+                                <div class="text-sm font-bold text-white">Analytics</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Contact -->
+        <div class="slide-4d bg-slide-5" data-index="4">
+            <div class="slide-content-layer">
+                <div class="slide-text-side">
+                    <div class="slide-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/8 border border-pink-500/20 text-pink-400 text-xs font-bold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                        Ready to Grow?
+                    </div>
+                    <h1 class="slide-title text-5xl md:text-7xl font-black leading-tight mb-6">
+                        <span class="text-white">Call Us</span><br/>
+                        <span class="gradient-text">Right Now</span><br/>
+                        <span class="text-pink-400">89296 82938</span>
+                    </h1>
+                    <p class="slide-desc text-lg text-neutral-500 mb-8 leading-relaxed max-w-lg">
+                        One call is all it takes. Free consultation. No hidden charges. We handle onboarding, sales, ratings — everything.
+                    </p>
+                    <div class="slide-btns flex flex-wrap gap-4">
+                        <a href="tel:8929682938" class="btn-3d bg-gradient-to-r from-pink-500 to-violet-600 text-white px-10 py-4 rounded-2xl font-bold text-xl">
+                            📞 Call Now
+                        </a>
+                        <a href="https://wa.me/918929682938" target="_blank" class="btn-3d btn-3d-green bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-10 py-4 rounded-2xl font-bold text-xl">
+                            💬 WhatsApp
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-visual-side flex justify-center">
+                    <div class="slide-card-4d text-center max-w-sm">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center text-5xl mb-6 shadow-2xl">
+                            📞
+                        </div>
+                        <h3 class="text-2xl font-black text-white mb-2">Free Consultation</h3>
+                        <p class="text-neutral-600 text-sm mb-6">Available 24/7 • No Hidden Charges</p>
+                        <div class="text-4xl font-black gradient-text mb-4">89296 82938</div>
+                        <div class="flex justify-center gap-3">
+                            <div class="stat-3d rounded-xl px-4 py-2">
+                                <div class="text-sm font-bold text-pink-400">98%</div>
+                                <div class="text-[10px] text-neutral-600">Happy</div>
+                            </div>
+                            <div class="stat-3d rounded-xl px-4 py-2">
+                                <div class="text-sm font-bold text-violet-400">&lt;5 Days</div>
+                                <div class="text-[10px] text-neutral-600">Setup</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <button class="slider-arrow prev" onclick="prevSlide()">‹</button>
+        <button class="slider-arrow next" onclick="nextSlide()">›</button>
+
+        <div class="slider-nav">
+            <div class="nav-dot active" onclick="goToSlide(0)"></div>
+            <div class="nav-dot" onclick="goToSlide(1)"></div>
+            <div class="nav-dot" onclick="goToSlide(2)"></div>
+            <div class="nav-dot" onclick="goToSlide(3)"></div>
+            <div class="nav-dot" onclick="goToSlide(4)"></div>
+        </div>
+    </div>
+
+    <!-- ===== REST OF WEBSITE ===== -->
+
+    <!-- Platforms Section -->
+    <section id="platforms" class="py-20 px-6" style="background: #080808;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black mb-4">
+                    <span class="gradient-text">Platforms</span>
+                    <span class="text-white"> We Dominate</span>
+                </h2>
+                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">Specialized onboarding and growth for India's top food delivery giants.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="group rounded-3xl p-8 text-center transition-all hover:-translate-y-2" style="background: linear-gradient(145deg, rgba(249,115,22,0.06), rgba(251,191,36,0.03)); border: 1px solid rgba(249,115,22,0.1);">
+                    <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/c7d5001034568bafd6a86a9d45d638e4c4bd27df.png" alt="Swiggy" class="logo-3d w-32 h-32 mx-auto mb-6 object-contain"/>
+                    <h3 class="text-3xl font-black text-orange-400 mb-3">Swiggy</h3>
+                    <p class="text-neutral-600 mb-6">Complete restaurant onboarding, menu optimization, and sales boost.</p>
+                    <div class="flex justify-center gap-4">
+                        <div class="stat-3d rounded-xl px-4 py-2">
+                            <div class="text-lg font-bold text-orange-400">+380%</div>
+                            <div class="text-[10px] text-neutral-600">Orders</div>
+                        </div>
+                        <div class="stat-3d rounded-xl px-4 py-2">
+                            <div class="text-lg font-bold text-amber-400">4.8★</div>
+                            <div class="text-[10px] text-neutral-600">Rating</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group rounded-3xl p-8 text-center transition-all hover:-translate-y-2" style="background: linear-gradient(145deg, rgba(225,29,72,0.06), rgba(236,72,153,0.03)); border: 1px solid rgba(225,29,72,0.1);">
+                    <img src="https://kimi-web-img.moonshot.cn/img/upload.wikimedia.org/6fc877f9365e0263b7bf4334c27c7a08d11e94c8.png" alt="Zomato" class="logo-3d w-32 h-32 mx-auto mb-6 object-contain"/>
+                    <h3 class="text-3xl font-black text-rose-500 mb-3">Zomato</h3>
+                    <p class="text-neutral-600 mb-6">Expert listing creation, photo optimization, and review management.</p>
+                    <div class="flex justify-center gap-4">
+                        <div class="stat-3d rounded-xl px-4 py-2">
+                            <div class="text-lg font-bold text-rose-400">+420%</div>
+                            <div class="text-[10px] text-neutral-600">Orders</div>
+                        </div>
+                        <div class="stat-3d rounded-xl px-4 py-2">
+                            <div class="text-lg font-bold text-pink-400">4.9★</div>
+                            <div class="text-[10px] text-neutral-600">Rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 px-6" style="background: #050505;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black mb-4">
+                    <span class="gradient-text">Our Services</span>
+                </h2>
+                <p class="text-neutral-600 max-w-2xl mx-auto text-lg">End-to-end platform onboarding and growth services.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(236,72,153,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(236,72,153,0.15);">🚀</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Platform Onboarding</h3>
+                    <p class="text-neutral-600 text-sm">Complete account setup, catalog creation, and compliance for Swiggy, Zomato, and more.</p>
+                </div>
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(251,191,36,0.1), rgba(236,72,153,0.1)); border: 1px solid rgba(251,191,36,0.15);">📈</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Sales & Orders Boost</h3>
+                    <p class="text-neutral-600 text-sm">Strategic pricing, listing optimization, and ad campaigns that drive real conversions.</p>
+                </div>
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(139,92,246,0.1), rgba(236,72,153,0.1)); border: 1px solid rgba(139,92,246,0.15);">⭐</div>
+                    <h3 class="text-xl font-bold text-white mb-3">5-Star Rating Engine</h3>
+                    <p class="text-neutral-600 text-sm">Review management, feedback loops, and reputation strategies to build trust.</p>
+                </div>
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(6,182,212,0.1), rgba(139,92,246,0.1)); border: 1px solid rgba(6,182,212,0.15);">🎨</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Creative Branding</h3>
+                    <p class="text-neutral-600 text-sm">Eye-catching food photos, menu design, and brand stores that stand out.</p>
+                </div>
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1)); border: 1px solid rgba(16,185,129,0.15);">📞</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Dedicated Support</h3>
+                    <p class="text-neutral-600 text-sm">One-on-one guidance, query resolution, and ongoing account management.</p>
+                </div>
+                <div class="group rounded-2xl p-6 hover:-translate-y-2 transition-all" style="background: rgba(10,10,10,0.95); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: linear-gradient(145deg, rgba(225,29,72,0.1), rgba(251,191,36,0.1)); border: 1px solid rgba(225,29,72,0.15);">📊</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Analytics & Insights</h3>
+                    <p class="text-neutral-600 text-sm">Deep-dive reports on sales trends, competitor analysis, and growth recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-20 px-6" style="background: #080808;">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black mb-4">
+                    <span class="gradient-text">3 Simple Steps</span>
+                    <span class="text-white"> to Success</span>
+                </h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <div class="hidden md:block absolute top-20 left-[20%] right-[20%] h-1 rounded-full" style="background: linear-gradient(90deg, rgba(236,72,153,0.2), rgba(139,92,246,0.2), rgba(251,191,36,0.2));"></div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center text-3xl font-black text-white mb-6 relative z-10" style="background: linear-gradient(145deg, #ec4899, #8b5cf6); box-shadow: 0 10px 40px rgba(236,72,153,0.3);">1</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Enquiry & Strategy</h3>
+                    <p class="text-neutral-600 text-sm">Call <span class="text-pink-400 font-bold">89296 82938</span> or WhatsApp. We analyze and craft a plan.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center text-3xl font-black text-white mb-6 relative z-10" style="background: linear-gradient(145deg, #8b5cf6, #f59e0b); box-shadow: 0 10px 40px rgba(139,92,246,0.3);">2</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Onboard & Optimize</h3>
+                    <p class="text-neutral-600 text-sm">We set up your Swiggy/Zomato store and launch campaigns.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center text-3xl font-black text-white mb-6 relative z-10" style="background: linear-gradient(145deg, #f59e0b, #ec4899); box-shadow: 0 10px 40px rgba(251,191,36,0.3);">3</div>
+                    <h3 class="text-xl font-bold text-white mb-3">Scale & Dominate</h3>
+                    <p class="text-neutral-600 text-sm">Watch orders pour in and ratings climb to 5 stars.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-20 px-6" style="background: #050505;">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black mb-6">
+                        <span class="text-white">Real Results,</span><br/>
+                        <span class="gradient-text">Real Growth</span>
+                    </h2>
+                    <p class="text-neutral-600 mb-8 text-lg">Our clients transform from struggling sellers to top-rated brands on Swiggy & Zomato.</p>
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-pink-400 font-black text-lg" style="background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.15);">+420%</div>
+                            <div>
+                                <div class="font-bold text-white text-lg">Average Order Growth</div>
+                                <div class="text-sm text-neutral-700">Within first 90 days</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-amber-400 font-black text-lg" style="background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.15);">4.9★</div>
+                            <div>
+                                <div class="font-bold text-white text-lg">Average Rating Achieved</div>
+                                <div class="text-sm text-neutral-700">Across all platforms</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-violet-400 font-black text-lg" style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.15);">500+</div>
+                            <div>
+                                <div class="font-bold text-white text-lg">Restaurants Onboarded</div>
+                                <div class="text-sm text-neutral-700">And counting every week</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="stat-3d rounded-2xl p-6 text-center hover:-translate-y-2 transition">
+                        <div class="text-5xl font-black text-pink-400 mb-2">98%</div>
+                        <div class="text-sm text-neutral-600 font-semibold">Client Satisfaction</div>
+                    </div>
+                    <div class="stat-3d rounded-2xl p-6 text-center hover:-translate-y-2 transition">
+                        <div class="text-5xl font-black text-violet-400 mb-2">24/7</div>
+                        <div class="text-sm text-neutral-600 font-semibold">Support Available</div>
+                    </div>
+                    <div class="stat-3d rounded-2xl p-6 text-center hover:-translate-y-2 transition">
+                        <div class="text-5xl font-black text-amber-400 mb-2">&lt;5 Days</div>
+                        <div class="text-sm text-neutral-600 font-semibold">Avg. Onboarding</div>
+                    </div>
+                    <div class="stat-3d rounded-2xl p-6 text-center hover:-translate-y-2 transition">
+                        <div class="text-5xl font-black text-emerald-400 mb-2">15+</div>
+                        <div class="text-sm text-neutral-600 font-semibold">Cities Covered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 px-6" style="background: #080808; border-top: 1px solid rgba(255,255,255,0.04);">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-2xl font-black gradient-text">ZODIAC SERVICE</div>
+            <div class="text-neutral-700 text-sm text-center md:text-right">
+                <p>Helping restaurants win on Swiggy & Zomato since 2020</p>
+                <p class="mt-1">Contact: <a href="tel:8929682938" class="text-pink-400 hover:underline font-semibold">89296 82938</a></p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto mt-8 pt-6 text-center text-xs text-neutral-800" style="border-top: 1px solid rgba(255,255,255,0.03);">
+            © 2026 ZODIAC SERVICE Services. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <div class="whatsapp-float">
+        <div class="whatsapp-tooltip">Chat on WhatsApp</div>
+        <a href="https://wa.me/918929682938" target="_blank" class="whatsapp-btn">💬</a>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-4d');
+        const dots = document.querySelectorAll('.nav-dot');
+        const counter = document.getElementById('currentSlide');
+        const totalSlides = slides.length;
+        let autoPlayInterval;
+
+        function updateSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'entering', 'exiting');
+                dots[i].classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active', 'entering');
+                    dots[i].classList.add('active');
+                } else if (i === currentSlide) {
+                    slide.classList.add('exiting');
+                }
+            });
+            counter.textContent = String(index + 1).padStart(2, '0');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            const next = (currentSlide + 1) % totalSlides;
+            updateSlide(next);
+        }
+
+        function prevSlide() {
+            const prev = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlide(prev);
+        }
+
+        function goToSlide(index) {
+            updateSlide(index);
+            resetAutoPlay();
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
+            if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+        });
+
+        let touchStartX = 0;
+        const slider = document.getElementById('heroSlider');
+        slider.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+        slider.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+                resetAutoPlay();
+            }
+        });
+
+        autoPlayInterval = setInterval(nextSlide, 5000);
+        slider.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        slider.addEventListener('mouseleave', () => {
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        });
+    </script>
+
+</body>
+</html>
